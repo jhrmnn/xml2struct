@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<results>
+    <point>
+        <i_atom>1</i_atom>
+        <i_full_points>2659</i_full_points>
+        <x>0.472631127156580E-003</x>
+        <y>0.000000000000000E+000</y>
+        <rho_free>0.378078481016412E+004</rho_free>
+        <rho_free_total_grad_norm>0.136348682963700E+006</rho_free_total_grad_norm>
+        <rho_free_grad_norm_total>0.136348683031584E+006</rho_free_grad_norm_total>
+        <density_c_free_grad_sum>-0.701878337702858E-001</density_c_free_grad_sum>
+        <density_c_free_norm_sum>-0.701878337415433E-001</density_c_free_norm_sum>
+        <rho>0.378080670676463E+004</rho>
+        <rho_grad_norm>0.136350777738493E+006</rho_grad_norm>
+        <density_c>-0.701874074623833E-001</density_c>
+        <atom>
+            <index>1</index>
+            <weight>0.999999995727276E+000</weight>
+            <rho_hirshfeld>0.378080669061029E+004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.136350776539378E+006</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.701874076342165E-001</density_c_hirshfeld>
+            <rho_free>0.378078479400987E+004</rho_free>
+            <rho_free_grad_norm>0.136348682997642E+006</rho_free_grad_norm>
+            <density_c_free>-0.701878334341296E-001</density_c_free>
+        </atom>
+        <atom>
+            <index>2</index>
+            <weight>0.427272445831454E-008</weight>
+            <rho_hirshfeld>0.161543452881529E-004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.119911519680770E-002</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.135958085067944E-011</density_c_hirshfeld>
+            <rho_free>0.161542517300123E-004</rho_free>
+            <rho_free_grad_norm>0.339419706770028E-004</rho_free_grad_norm>
+            <density_c_free>-0.208446906260588E-005</density_c_free>
+        </atom>
+    </point>
+    <point>
+        <i_atom>1</i_atom>
+        <i_full_points>2660</i_full_points>
+        <x>0.000000000000000E+000 244</x>
+        <y>0.472631127156580E-003</y>
+        <rho_free>0.378078481014808E+004</rho_free>
+        <rho_free_total_grad_norm>0.136348682997645E+006</rho_free_total_grad_norm>
+        <rho_free_grad_norm_total>0.136348683031550E+006</rho_free_grad_norm_total>
+        <density_c_free_grad_sum>-0.701878337559814E-001</density_c_free_grad_sum>
+        <density_c_free_norm_sum>-0.505978999105285E-001</density_c_free_norm_sum>
+        <rho>0.378080732255491E+004</rho>
+        <rho_grad_norm>0.136349496420842E+006</rho_grad_norm>
+        <density_c>-0.701879476170936E-001</density_c>
+        <atom>
+            <index>1</index>
+            <weight>0.999999995731517E+000</weight>
+            <rho_hirshfeld>0.378080730641660E+004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.136349495256833E+006</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.701879477747877E-001</density_c_hirshfeld>
+            <rho_free>0.378078479400987E+004</rho_free>
+            <rho_free_grad_norm>0.136348682997642E+006</rho_free_grad_norm>
+            <density_c_free>-0.701878334341296E-001</density_c_free>
+        </atom>
+        <atom>
+            <index>2</index>
+            <weight>0.426848341558852E-008</weight>
+            <rho_hirshfeld>0.161383133538613E-004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.116450223785125E-002</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.152030991962260E-011</density_c_hirshfeld>
+            <rho_free>0.161382172600261E-004</rho_free>
+            <rho_free_grad_norm>0.339081011758589E-004</rho_free_grad_norm>
+            <density_c_free>-0.208151335681986E-005</density_c_free>
+        </atom>
+    </point>
+    <point>
+        <i_atom>1</i_atom>
+        <i_full_points>2683</i_full_points>
+        <x>0.226092093284285E-003</x>
+        <y>0.415045235741394E-003</y>
+        <rho_free>0.378078481015575E+004</rho_free>
+        <rho_free_total_grad_norm>0.136348682981416E+006</rho_free_total_grad_norm>
+        <rho_free_grad_norm_total>0.136348683031566E+006</rho_free_grad_norm_total>
+        <density_c_free_grad_sum>-0.701878337628204E-001</density_c_free_grad_sum>
+        <density_c_free_norm_sum>-0.505981633853360E-001</density_c_free_norm_sum>
+        <rho>0.378080702748602E+004</rho>
+        <rho_grad_norm>0.136350111446521E+006</rho_grad_norm>
+        <density_c>-0.701876883552554E-001</density_c>
+        <atom>
+            <index>1</index>
+            <weight>0.999999995729488E+000</weight>
+            <rho_hirshfeld>0.378080701134004E+004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.136350110265728E+006</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.701876885197095E-001</density_c_hirshfeld>
+            <rho_free>0.378078479400987E+004</rho_free>
+            <rho_free_grad_norm>0.136348682997642E+006</rho_free_grad_norm>
+            <density_c_free>-0.701878334341296E-001</density_c_free>
+        </atom>
+        <atom>
+            <index>2</index>
+            <weight>0.427051162661436E-008</weight>
+            <rho_hirshfeld>0.161459803688643E-004</rho_hirshfeld>
+            <rho_hirshfeld_grad_norm>0.118116894614166E-002</rho_hirshfeld_grad_norm>
+            <density_c_hirshfeld>-0.144003559077177E-011</density_c_hirshfeld>
+            <rho_free>0.161458854894971E-004</rho_free>
+            <rho_free_grad_norm>0.339242986831438E-004</rho_free_grad_norm>
+            <density_c_free>-0.208292673069266E-005</density_c_free>
+        </atom>
+    </point>
+    <energy method="total" unit="eV">-132996.303295154</energy>
+    <energy method="TS@TS.VVG" unit="meV">-608.082825040502</energy>
+    <energy method="TS@SCS.VVG" unit="meV">-1126.81957451882</energy>
+    <energy method="MBD@SCS.VVG" unit="meV">-726.295270341066</energy>
+    <energy method="MBD@TS.VVG" unit="meV">-757.264875683191</energy>
+    <energy method="MBD@rsSCS.VVG" unit="meV">-1150.19209082381</energy>
+    <energy method="TS@TS" unit="meV">-608.082825040503</energy>
+    <energy method="TS@SCS" unit="meV">-1126.81957451880</energy>
+    <energy method="MBD@SCS" unit="meV">-726.295270341114</energy>
+    <energy method="MBD(RPA)@SCS" unit="meV">NaN</energy>
+    <energy method="MBD@TS" unit="meV">-757.264875683179</energy>
+    <energy method="MBD(RPA)@TS" unit="meV">NaN</energy>
+    <energy method="MBD@TS.2" unit="meV">-981.357494191301</energy>
+    <energy method="MBD@rsSCS" unit="meV">-1150.19209082396</energy>
+    <atom>
+        <index>1</index>
+        <species>Mo</species>
+        <alpha_0 method="free">88.4225769042969</alpha_0>
+        <C6 method="free">1028.72998046875</C6>
+        <R_vdw method="free">4.09899997711182</R_vdw>
+        <alpha_0 method="TS">89.6695140667779</alpha_0>
+        <C6 method="TS">1057.94890746135</C6>
+        <R_vdw method="TS">4.11817817041253</R_vdw>
+        <alpha_0 method="SCS">305.624981890519</alpha_0>
+        <C6 method="SCS">10594.2113722932</C6>
+        <R_vdw method="SCS">6.19754673372183</R_vdw>
+        <alpha_0 method="VV">22.6876346164505</alpha_0>
+        <C6 method="VV">0.790505033345994-322</C6>
+        <R_vdw method="VV">0.247032822920623-322</R_vdw>
+        <grid_data variable="omega">
+            <point weight="0.0000">
+                <omega>0.00000000000000</omega>
+                <alpha method="TS">89.6695140667779</alpha>
+                <alpha method="SCS">305.624981890519</alpha>
+                <alpha method="VV">22.6876346164505</alpha>
+            </point>
+            <point weight="0.7866">
+                <omega>0.392901003360748E-01</omega>
+                <alpha method="TS">85.3867029325126</alpha>
+                <alpha method="SCS">294.404795494936</alpha>
+                <alpha method="VV">22.5056597430368</alpha>
+            </point>
+            <point weight="0.7964">
+                <omega>0.118358001112938</omega>
+                <alpha method="TS">61.6215978105984</alpha>
+                <alpha method="SCS">203.337586330368</alpha>
+                <alpha method="VV">21.1927507149251</alpha>
+            </point>
+        </grid_data>
+    </atom>
+    <atom>
+        <index>2</index>
+        <species>S</species>
+        <alpha_0 method="free">19.6000003814697</alpha_0>
+        <C6 method="free">134.000000000000</C6>
+        <R_vdw method="free">3.85999989509583</R_vdw>
+        <alpha_0 method="TS">19.4576125795587</alpha_0>
+        <C6 method="TS">132.060136721457</C6>
+        <R_vdw method="TS">3.85062994240214</R_vdw>
+        <alpha_0 method="SCS">13.8264989968795</alpha_0>
+        <C6 method="SCS">162.878908532985</C6>
+        <R_vdw method="SCS">3.43615443895899</R_vdw>
+        <alpha_0 method="VV">20.4048083365606</alpha_0>
+        <C6 method="VV">0.885777970540674E+26</C6>
+        <R_vdw method="VV">0.247032822920623-322</R_vdw>
+        <grid_data variable="omega">
+            <point weight="0.0000">
+                <omega>0.00000000000000</omega>
+                <alpha method="TS">19.4576125795587</alpha>
+                <alpha method="SCS">13.8264989968795</alpha>
+                <alpha method="VV">20.4048083365606</alpha>
+            </point>
+            <point weight="0.7866">
+                <omega>0.392901003360748E-01</omega>
+                <alpha method="TS">19.3197315200617</alpha>
+                <alpha method="SCS">14.8313980654193</alpha>
+                <alpha method="VV">20.1950695174028</alpha>
+            </point>
+        </grid_data>
+    </atom>
+    <atom>
+        <index>3</index>
+        <species>S</species>
+        <alpha_0 method="free">19.6000003814697</alpha_0>
+        <C6 method="free">134.000000000000</C6>
+        <R_vdw method="free">3.85999989509583</R_vdw>
+        <alpha_0 method="TS">19.4568440674048</alpha_0>
+        <C6 method="TS">132.049705039209</C6>
+        <R_vdw method="TS">3.85057924596546</R_vdw>
+        <alpha_0 method="SCS">13.8618003871359</alpha_0>
+        <C6 method="SCS">163.351709157237</C6>
+        <R_vdw method="SCS">3.43907631482035</R_vdw>
+        <alpha_0 method="VV">20.3759687934868</alpha_0>
+        <C6 method="VV">0.618398367397990+127</C6>
+        <R_vdw method="VV">0.695335107284226-309</R_vdw>
+        <grid_data variable="omega">
+            <point weight="0.0000">
+                <omega>0.00000000000000</omega>
+                <alpha method="TS">19.4568440674048</alpha>
+                <alpha method="SCS">13.8618003871359</alpha>
+                <alpha method="VV">20.3759687934868</alpha>
+            </point>
+            <point weight="0.7866">
+                <omega>0.392901003360748E-01</omega>
+                <alpha method="TS">19.3189684537594</alpha>
+                <alpha method="SCS">14.8690054953379</alpha>
+                <alpha method="VV">20.1668788239659</alpha>
+            </point>
+            <point weight="0.7964">
+                <omega>0.118358001112938</omega>
+                <alpha method="TS">18.2733894628668</alpha>
+                <alpha method="SCS">20.4452842635326</alpha>
+                <alpha method="VV">18.7302048041508</alpha>
+            </point>
+            <point weight="0.8164">
+                <omega>0.198911994695663</omega>
+                <alpha method="TS">16.4481604094487</alpha>
+                <alpha method="SCS">21.6791284535213</alpha>
+                <alpha method="VV">16.6136797094924</alpha>
+            </point>
+        </grid_data>
+    </atom>
+</results>
