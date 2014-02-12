@@ -13,5 +13,5 @@ clean :
 	-rm xml2struct.$(MEXEXT)
 
 test :
-	matlab -nojvm -r "tic; xml2struct('test.xml'); toc; exit"
+	matlab -nojvm -r "tic; disp(xml2struct('test.xml')); toc; exit"
 
