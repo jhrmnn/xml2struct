@@ -12,6 +12,65 @@ typedef vector<xml_node<>*> list_1;
 typedef map<int,list_1> dict_1;
 typedef map<string,dict_1> dict_2;
 
+mxArray *parse_arrays(vector<xml_node<>*> arrays)
+{
+    int n_arrays = arrays.size();
+    mxArray *data = mxCreateCellArray(1, &n_arrays);
+    for (int i_array = 0; i_array < n_arrays; i_array++) {
+        vector<int> dims;
+        xml_node<> *node;
+        for (node = arrays[i_array]->first_node()->first_node(); node; node = node->next_sibling()) {
+            if (strcmp(node->name(), "dimension") != 0) {
+                break;
+            }
+            dims.push_back(atoi(node->value()));
+        }
+        int n_dims = dims.size();
+        int* dims_arr = new int[n_dims];
+        for (int i = 0; i < n_dims; i++) {
+            dims_arr[i] = dims[i];
+        }
+        mxArray *mx_array = mxCreateNumericArray(n_dims, dims_arr, mxDOUBLE_CLASS, mxREAL);
+        delete[] dims_arr;
+        mxSetCell(data, i_array, mx_array);
+        double *arr = mxGetPr(mx_array);
+        vector<xml_node<>*> node_index(n_dims);
+        node_index.back() = node;
+        for (int i = n_dims-2; i >= 0; i--) {
+            node_index[i] = node_index[i+1]->first_node();
+        }
+        vector<int> multi_index(n_dims, 1);
+        int running_index = 0;
+        while (true) {
+            arr[running_index] = atof(node_index[0]->value());
+            running_index++;
+            multi_index[0]++;
+            for (int i = 0; i < n_dims; i++) {
+                if (multi_index[i] <= dims[i]) {
+                    node_index[i] = node_index[i]->next_sibling();
+                    for (int j = i-1; j >= 0; j--) {
+                        node_index[j] = node_index[j+1]->first_node();
+                    }
+                    break;
+                } else if (i < n_dims-1) {
+                    multi_index[i] = 1;
+                    multi_index[i+1]++;
+                }
+            }
+            if (multi_index.back() > dims.back()) {
+                break;
+            }
+        }
+    }
+    if (n_arrays == 1) {
+        mxArray *data_cell = data;
+        data = mxGetCell(data_cell, 0);
+        mxSetCell(data_cell, 0, NULL);
+        mxDestroyArray(data_cell);
+    }
+    return data;
+}
+
 mxArray *parse_family(vector<xml_node<>*> family)
 {
     int i;
@@ -78,7 +137,11 @@ mxArray *parse_family(vector<xml_node<>*> family)
                     }
                 }
             } else {
-                value = parse_family(it_1->second);
+                if (strcmp(it_1->second[0]->first_node()->name(), "real_array_object") == 0) {
+                    value = parse_arrays(it_1->second);
+                } else {
+                    value = parse_family(it_1->second);
+                }
             }
             mxSetField(data, it_1->first, it_2->first.c_str(), value);
         }

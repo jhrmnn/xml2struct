@@ -1,5 +1,21 @@
 <?xml version="1.0"?>
 <results>
+    <coords>
+        <real_array_object>
+            <dimension>3</dimension>
+            <dimension>2</dimension>
+            <vector>
+                <cell>0.00000000000000</cell>
+                <cell>0.00000000000000</cell>
+                <cell>0.00000000000000</cell>
+            </vector>
+            <vector>
+                <cell>15.1178090228035</cell>
+                <cell>0.00000000000000</cell>
+                <cell>0.00000000000000</cell>
+            </vector>
+        </real_array_object>
+    </coords>
     <point>
         <i_atom>1</i_atom>
         <i_full_points>2659</i_full_points>
