@@ -3,7 +3,7 @@
 #include <vector>
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
-#include <mex.h>
+#include "mex.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -59,7 +59,6 @@ mxArray *parse_family(vector<xml_node<>*> family)
     char *end_p;
     double d;
     double *arr;
-    int dims[1];
     mxArray *value;
     for (dict_2::iterator it_2 = fields.begin(); it_2 != fields.end(); it_2++) {
         for (dict_1::iterator it_1 = it_2->second.begin(); it_1 != it_2->second.end(); it_1++) {
@@ -72,8 +71,8 @@ mxArray *parse_family(vector<xml_node<>*> family)
                         arr[i] = strtod(it_1->second[i]->value(), &end_p);
                     }
                 } else {
-                    dims[0] = it_1->second.size();
-                    value = mxCreateCellArray(1, dims);
+                    int size = it_1->second.size();
+                    value = mxCreateCellArray(1, &size);
                     for (i = 0; i < it_1->second.size(); i++) {
                         mxSetCell(value, i, mxCreateString(it_1->second[i]->value()));
                     }
