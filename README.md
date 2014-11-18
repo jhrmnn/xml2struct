@@ -1,5 +1,7 @@
 This small mex function converts an XML file into a MATLAB structure. 
 
+For compilation of the C++ mex file, run `make`.
+
 Specification of the conversion:
 
 * All element attributes are ignored.
