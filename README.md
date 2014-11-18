@@ -55,23 +55,23 @@ So for example this `test.xml`
 would be resolved as
 
 ```matlab
->> inception = xml2struct('test.xml')
-inception = 
-    another_dream: {2x1 cell}
-            dream: [3x1 struct]
->> inception.dream.dream
-ans =
-     1
-     2
-     3
-ans = 
-    'Dream 1'
-    'Dream 2'
-    'Dream 3'
-ans =
-Dream
->> inception.another_dream
-ans = 
-    [2x1x2 double]
-    [           2]
+inception = xml2struct('test.xml')
+% inception = 
+%     another_dream: {2x1 cell}
+%             dream: [3x1 struct]
+inception.dream.dream
+% ans =
+%      1
+%      2
+%      3
+% ans = 
+%     'Dream 1'
+%     'Dream 2'
+%     'Dream 3'
+% ans =
+% Dream
+inception.another_dream
+% ans = 
+%     [2x1x2 double]
+%     [           2]
 ```
