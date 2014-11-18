@@ -133,9 +133,13 @@ mxArray *parse_family(list_p_node family)
                     }
                 } else {
                     int size = it_i_list->second.size();
+                    if (size > 1) {
                         value = mxCreateCellArray(1, &size);
                         for (i = 0; i < it_i_list->second.size(); i++) {
                             mxSetCell(value, i, mxCreateString(it_i_list->second[i]->value()));
+                        }
+                    } else {
+                        value = mxCreateString(it_i_list->second[0]->value());
                     }
                 }
             } else if (strcmp(it_i_list->second[0]->first_node()->name(), "dimension") == 0) {
