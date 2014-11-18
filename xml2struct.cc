@@ -19,7 +19,7 @@ mxArray *parse_arrays(list_p_node arrays)
     for (int i_array = 0; i_array < n_arrays; i_array++) {
         vector<int> dims;
         xml_node<> *node;
-        for (node = arrays[i_array]->first_node()->first_node(); node; node = node->next_sibling()) {
+        for (node = arrays[i_array]->first_node(); node; node = node->next_sibling()) {
             if (strcmp(node->name(), "dimension") != 0) {
                 break;
             }
@@ -136,12 +136,10 @@ mxArray *parse_family(list_p_node family)
                             mxSetCell(value, i, mxCreateString(it_i_list->second[i]->value()));
                     }
                 }
+            } else if (strcmp(it_i_list->second[0]->first_node()->name(), "dimension") == 0) {
+                value = parse_arrays(it_i_list->second);
             } else {
-                if (strcmp(it_1->second[0]->first_node()->name(), "real_array_object") == 0) {
-                    value = parse_arrays(it_1->second);
-                } else {
-                    value = parse_family(it_1->second);
-                }
+                value = parse_family(it_i_list->second);
             }
             mxSetField(data, it_i_list->first, it_str_dict->first.c_str(), value);
         }
