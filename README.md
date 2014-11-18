@@ -9,21 +9,69 @@ Specification of the conversion:
     * If the first node of the first sibling is an element named "dimension", this family will become either an nD real array (details below) or a 1D cell array of nD real arrays, depending on the family size. 
     * If the first node of the first sibling is any other element (not a data node), this family will become a 1D struct array (whose fields can be 1D struct arrays, etc.). This is the recursive rule.
 * The root of the document is an exception and will always be resolved according to the last rule (as a struct scalar). It should contain at least one element.
-* An nD real array has to have a structure as in the following example, which would be resloved into a 2x2x1 real array. The dimensionality is unlimited.
+
+So for example this `test.xml`
+
 ```xml
-<some_array_name>
-    <dimension>2</dimension>
-    <dimension>2</dimension>
-    <dimension>1</dimension>
-    <vector>
+<?xml version="1.0"?>
+<inception>
+    <dream>
+        <dream>1</dream>
+        <dream>2</dream>
+        <dream>3</dream>
+    </dream>
+    <dream>
+        <dream>Dream 1</dream>
+        <dream>Dream 2</dream>
+        <dream>Dream 3</dream>
+    </dream>
+    <dream>
+        <dream>Dream</dream>
+    </dream>
+    <another_dream>
+        <dimension>2</dimension>
+        <dimension>1</dimension>
+        <dimension>2</dimension>
         <vector>
-            <cell>1</cell>
-            <cell>-1e5</cell>
+            <vector>
+                <cell>1</cell>
+                <cell>-1e5</cell>
+            </vector>
         </vector>
         <vector>
-            <cell>1e-10</cell>
-            <cell>0</cell>
+            <vector>
+                <cell>1e-5</cell>
+                <cell>-1</cell>
+            </vector>
         </vector>
-    </vector>
-</some_array_name>
+    </another_dream>
+    <another_dream>
+        <dimension>1</dimension>
+        <cell>2</cell>
+    </another_dream>
+</inception>
+```
+
+would be resolved as
+
+```matlab
+>> inception = xml2struct('test.xml')
+inception = 
+    another_dream: {2x1 cell}
+            dream: [3x1 struct]
+>> inception.dream.dream
+ans =
+     1
+     2
+     3
+ans = 
+    'Dream 1'
+    'Dream 2'
+    'Dream 3'
+ans =
+Dream
+>> inception.another_dream
+ans = 
+    [2x1x2 double]
+    [           2]
 ```
