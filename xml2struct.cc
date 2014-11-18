@@ -121,6 +121,8 @@ mxArray *parse_family(list_p_node family)
     mxArray *value;
     for (dict_str_to_dict::iterator it_str_dict = fields.begin(); it_str_dict != fields.end(); it_str_dict++) {
         for (dict_i_to_list::iterator it_i_list = it_str_dict->second.begin(); it_i_list != it_str_dict->second.end(); it_i_list++) {
+            if (it_i_list->second[0]->first_node() == 0)
+                continue;
             if (it_i_list->second[0]->first_node()->type() == node_data) {
                 d = strtod(it_i_list->second[0]->value(), &end_p);
                 if (*end_p == '\0') {
