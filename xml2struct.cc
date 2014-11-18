@@ -8,11 +8,11 @@
 using namespace std;
 using namespace rapidxml;
 
-typedef vector<xml_node<>*> list_1;
-typedef map<int,list_1> dict_1;
-typedef map<string,dict_1> dict_2;
+typedef vector<xml_node<>*> list_p_node;
+typedef map<int,list_p_node> dict_i_to_list;
+typedef map<string,dict_i_to_list> dict_str_to_dict;
 
-mxArray *parse_arrays(vector<xml_node<>*> arrays)
+mxArray *parse_arrays(list_p_node arrays)
 {
     int n_arrays = arrays.size();
     mxArray *data = mxCreateCellArray(1, &n_arrays);
@@ -34,7 +34,7 @@ mxArray *parse_arrays(vector<xml_node<>*> arrays)
         delete[] dims_arr;
         mxSetCell(data, i_array, mx_array);
         double *arr = mxGetPr(mx_array);
-        vector<xml_node<>*> node_index(n_dims);
+        list_p_node node_index(n_dims);
         node_index.back() = node;
         for (int i = n_dims-2; i >= 0; i--) {
             node_index[i] = node_index[i+1]->first_node();
@@ -71,7 +71,7 @@ mxArray *parse_arrays(vector<xml_node<>*> arrays)
     return data;
 }
 
-mxArray *parse_family(vector<xml_node<>*> family)
+mxArray *parse_family(list_p_node family)
 {
     int i;
 
@@ -82,7 +82,7 @@ mxArray *parse_family(vector<xml_node<>*> family)
             if type(node) is element:
                 fields[node.name][i].append(node)
     */
-    dict_2 fields;
+    dict_str_to_dict fields;
     for (i = 0; i < family.size(); i++) {
         for (xml_node<> *node = family[i]->first_node(); node; node = node->next_sibling()) {
             if (node->type() == node_element) {
@@ -97,7 +97,7 @@ mxArray *parse_family(vector<xml_node<>*> family)
     */
     const char **fieldnames = new const char*[fields.size()];
     i = 0;
-    for (dict_2::iterator it = fields.begin(); it != fields.end(); it++) {
+    for (dict_str_to_dict::iterator it = fields.begin(); it != fields.end(); it++) {
         fieldnames[i++] = it->first.c_str();
     }
     mxArray *data = mxCreateStructMatrix(family.size(), 1, fields.size(), fieldnames);
@@ -119,21 +119,21 @@ mxArray *parse_family(vector<xml_node<>*> family)
     double d;
     double *arr;
     mxArray *value;
-    for (dict_2::iterator it_2 = fields.begin(); it_2 != fields.end(); it_2++) {
-        for (dict_1::iterator it_1 = it_2->second.begin(); it_1 != it_2->second.end(); it_1++) {
-            if (it_1->second[0]->first_node()->type() == node_data) {
-                d = strtod(it_1->second[0]->value(), &end_p);
+    for (dict_str_to_dict::iterator it_str_dict = fields.begin(); it_str_dict != fields.end(); it_str_dict++) {
+        for (dict_i_to_list::iterator it_i_list = it_str_dict->second.begin(); it_i_list != it_str_dict->second.end(); it_i_list++) {
+            if (it_i_list->second[0]->first_node()->type() == node_data) {
+                d = strtod(it_i_list->second[0]->value(), &end_p);
                 if (*end_p == '\0') {
-                    value = mxCreateDoubleMatrix(it_1->second.size(), 1, mxREAL);
+                    value = mxCreateDoubleMatrix(it_i_list->second.size(), 1, mxREAL);
                     arr = mxGetPr(value);
-                    for (i = 0; i < it_1->second.size(); i++) {
-                        arr[i] = strtod(it_1->second[i]->value(), &end_p);
+                    for (i = 0; i < it_i_list->second.size(); i++) {
+                        arr[i] = strtod(it_i_list->second[i]->value(), &end_p);
                     }
                 } else {
-                    int size = it_1->second.size();
-                    value = mxCreateCellArray(1, &size);
-                    for (i = 0; i < it_1->second.size(); i++) {
-                        mxSetCell(value, i, mxCreateString(it_1->second[i]->value()));
+                    int size = it_i_list->second.size();
+                        value = mxCreateCellArray(1, &size);
+                        for (i = 0; i < it_i_list->second.size(); i++) {
+                            mxSetCell(value, i, mxCreateString(it_i_list->second[i]->value()));
                     }
                 }
             } else {
@@ -143,7 +143,7 @@ mxArray *parse_family(vector<xml_node<>*> family)
                     value = parse_family(it_1->second);
                 }
             }
-            mxSetField(data, it_1->first, it_2->first.c_str(), value);
+            mxSetField(data, it_i_list->first, it_str_dict->first.c_str(), value);
         }
     }
 
@@ -158,7 +158,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
     file<> xml_file(filename);
     xml_document<> doc;
     doc.parse<0>(xml_file.data());
-    list_1 root;
+    list_p_node root;
     root.push_back(doc.first_node());
     plhs[0] = parse_family(root);
 }
