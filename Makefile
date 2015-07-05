@@ -1,17 +1,13 @@
-MEXEXT:=`mexext`
+mexext := $(shell mexext)
 
-all : xml2struct.$(MEXEXT)
+all: xml2struct.${mexext}
 
-xml2struct.$(MEXEXT) : xml2struct.cc
-	mex CC=c++ CXX=c++ LD=c++ -I./rapidxml-1.13 xml2struct.cc
+%.${mexext}: %.cc
+	mex CC=c++ CXX=c++ LD=c++ -I./rapidxml-1.13 -I/usr/local/Cellar/boost/1.58.0/include $<
 
-rebuild : 
-	touch xml2struct.cc
-	make
+clean:
+	-rm *.${mexext}
 
-clean :
-	-rm xml2struct.$(MEXEXT)
-
-test :
+test:
 	matlab -nojvm -r "tic; disp(xml2struct('test.xml')); toc; exit"
 

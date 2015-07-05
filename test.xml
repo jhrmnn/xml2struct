@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <inception>
     <dream>
-        <dream>1</dream>
-        <dream>2</dream>
-        <dream>3</dream>
-    </dream>
-    <dream>
         <dream>Dream 1</dream>
         <dream>Dream 2</dream>
         <dream>Dream 3</dream>
@@ -13,25 +8,32 @@
     <dream>
         <dream>Dream</dream>
     </dream>
-    <another_dream>
-        <dimension>2</dimension>
-        <dimension>1</dimension>
-        <dimension>2</dimension>
+    <dreaming>
+        a dreamy sequence
+    </dreaming>
+    <sequence>
+        <dream>
+            <dream type="real">1.0</dream>
+            <dream type="int">10</dream>
+        </dream>
+        <dream>
+            <dream type="real">10.0</dream>
+            <dream type="int">100</dream>
+        </dream>
+    </sequence>
+    <mind type="real" size="2 1 2">
         <vector>
             <vector>
-                <cell>1</cell>
-                <cell>-1e5</cell>
+                1 -1e5
             </vector>
         </vector>
         <vector>
             <vector>
-                <cell>1e-5</cell>
-                <cell>-1</cell>
+                1e-5 -1
             </vector>
         </vector>
-    </another_dream>
-    <another_dream>
-        <dimension>1</dimension>
-        <cell>2</cell>
-    </another_dream>
+    </mind>
+    <mind type="real" size="1">
+        2
+    </mind>
 </inception>
