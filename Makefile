@@ -1,9 +1,13 @@
+BOOST ?= /usr/local/Cellar/boost/1.58.0/include
+CC ?= c++
+CXX ?= c++
+LD ?= c++
 mexext := $(shell mexext)
 
 all: xml2struct.${mexext}
 
 %.${mexext}: %.cc
-	mex CC=c++ CXX=c++ LD=c++ -I./rapidxml-1.13 -I/usr/local/Cellar/boost/1.58.0/include $<
+	mex CC=${CC} CXX=${CXX} LD=${LD} -I./rapidxml-1.13 -I${BOOST} $<
 
 clean:
 	-rm *.${mexext}
