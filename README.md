@@ -1,8 +1,10 @@
-This small mex function converts an XML file into a MATLAB structure. 
+This small mex function converts an XML file into a MATLAB structure.
 
-For compilation of the C++ mex file, run `make`.
+For compilation of the C++ mex file, run `make BOOST=<path>` where `<path>` is 
+a path to the Boost library include files.
 
-To run a test and see how `test.xml` gets converted, run `make test`. It should output
+To run a test and see how `test.xml` gets converted, run `make test`. It should 
+output
 
 ```
           SCS: [1x1 struct]
