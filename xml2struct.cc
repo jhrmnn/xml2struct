@@ -102,7 +102,7 @@ mxArray* parse_family(list_node family)
             if (has_type) {
                 type = sibling_children->second[0]->first_attribute("type")->value();
             }
-            if (has_type && (strcmp(type, "real") || strcmp(type, "int"))) {
+            if (has_type && (strcmp(type, "dble") || strcmp(type, "int"))) {
                 value = parse_arrays(sibling_children->second);
             } else if (sibling_children->second[0]->first_node()->type() == node_element) {
                 value = parse_family(sibling_children->second);
