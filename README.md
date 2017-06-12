@@ -5,6 +5,8 @@ It can additionally read general n-dimensional arrays.
 For compilation of the C++ mex file, run `make BOOST=<path>` where `<path>` is 
 a path to the Boost library include files.
 
+**TODO**: Remove Boost dependency. It's here because of a single string function and absolutely should be gone.
+
 To run a test and see how `test.xml` gets converted, run `make test`. It should 
 output
 
