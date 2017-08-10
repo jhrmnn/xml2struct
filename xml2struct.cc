@@ -50,7 +50,7 @@ template <> double tonum<double>(const string &s) {
 
 template <typename T> vector<T> tonum(vector<string> v) {
     vector<T> tokens(v.size());
-    for (int i = 0; i < v.size(); i++) {
+    for (size_t i = 0; i < v.size(); i++) {
         tokens[i] = tonum<T>(v[i]);
     }
     return tokens;
@@ -59,6 +59,8 @@ template <typename T> vector<T> tonum(vector<string> v) {
 void mexFunction(int nlhs, mxArray *plhs[],
                  int nrhs, const mxArray *prhs[])
 {
+    assert(nlhs == 1);
+    assert(nrhs == 1);
     char filename[200];
     mxGetString(prhs[0], filename, 200);
     file<> xml_file(filename);
@@ -72,7 +74,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 mxArray* parse_family(list_node family)
 {
     dict_str_to_dict fields;
-    for (int sibling = 0; sibling < family.size(); sibling++) {
+    for (size_t sibling = 0; sibling < family.size(); sibling++) {
         for (xmlnode
              child = family[sibling]->first_node(); 
              child; 
@@ -99,8 +101,6 @@ mxArray* parse_family(list_node family)
                                          fields.size(), fieldnames);
     delete[] fieldnames;
 
-    char* end_p;
-    double d;
     bool has_type;
     mxArray* value;
     char* type;
