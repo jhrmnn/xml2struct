@@ -7,13 +7,27 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-#include <boost/algorithm/string.hpp>
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
 #include "mex.h"
 
 using namespace std;
 using namespace rapidxml;
+
+template<typename T> void split(T& tokens, const string& str, const string& delims, bool trimEmpty = false) {
+    size_t start = 0, end;
+    do {
+        end = str.find_first_of(delims, start);
+        if (start != end || !trimEmpty) {
+            tokens.push_back(typename T::value_type(str, start, (end != string::npos) ? end-start : end));
+        }
+        start = end+1;
+    } while (end != string::npos);
+}
+
+template<typename T> void split(T& tokens, const string& str) {
+    split(tokens, str, " \t\n", true);
+}
 
 typedef xml_node<>* xmlnode;
 typedef vector<xmlnode> list_node;
@@ -141,8 +155,7 @@ mxArray* parse_arrays(list_node arrays)
         if (has_size) {
             vector<string> tokens;
             string size_attr = trimmed(arrays[i_array]->first_attribute("size")->value());
-            boost::split(tokens, size_attr, boost::is_any_of(" \t\n"), 
-                         boost::token_compress_on);
+            split(tokens, size_attr);
             dims = tonum<int>(tokens);
         } else {
             dims = vector<int>(1, 1);
@@ -175,8 +188,7 @@ mxArray* parse_arrays(list_node arrays)
             }
             col_str = trimmed(col_str);
             vector<string> tokens;
-            boost::split(tokens, col_str, boost::is_any_of(" \t\n"), 
-                         boost::token_compress_on);
+            split(tokens, col_str);
             col = tonum<double>(tokens);
             for (int i = 0; i < dims[0]; i++) {
                 arr[running_index++] = col[i];
