@@ -1,11 +1,6 @@
-This small mex function converts an XML file into a MATLAB structure. 
-It can parse any general XML file and with a proper mark-up and strucure, 
-It can additionally read general n-dimensional arrays.
+This small mex function converts an XML file into a MATLAB structure. It can parse any general XML file and with a proper mark-up and structure, it can additionally read general *N*-dimensional arrays.
 
-For compilation of the C++ mex file, run `make BOOST=<path>` where `<path>` is 
-a path to the Boost library include files.
-
-**TODO**: Remove Boost dependency. It's here because of a single string function and absolutely should be gone.
+To build the mex file, run `make`. A compiler supporting C++11 is required.
 
 To run a test and see how `test.xml` gets converted, run `make test`. It should 
 output
