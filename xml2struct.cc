@@ -11,76 +11,84 @@
 #include "rapidxml_utils.hpp"
 #include "mex.h"
 
-using namespace std;
-using namespace rapidxml;
-
-template<typename T> void split(T& tokens, const string& str, const string& delims, bool trimEmpty = false) {
-    size_t start = 0, end;
-    do {
+template<typename T> void split(T& tokens, const std::string& str, const std::string& delims, bool trimEmpty = false)
+{
+    size_t start = 0;
+    size_t end = 0;
+    while (end != std::string::npos) {
         end = str.find_first_of(delims, start);
         if (start != end || !trimEmpty) {
-            tokens.push_back(typename T::value_type(str, start, (end != string::npos) ? end-start : end));
+            tokens.push_back(typename T::value_type(str, start, (end != std::string::npos) ? end-start : end));
         }
         start = end+1;
-    } while (end != string::npos);
+    }
 }
 
-template<typename T> void split(T& tokens, const string& str) {
+template<typename T> void split(T& tokens, const std::string& str)
+{
     split(tokens, str, " \t\n", true);
 }
 
-typedef xml_node<>* xmlnode;
-typedef vector<xmlnode> list_node;
-typedef map<int,list_node> dict_i_to_list;
-typedef map<string,dict_i_to_list> dict_str_to_dict;
-
-inline string trimmed(const string &s);
-template <typename T> T tonum(const string &s);
-template <typename T> ostream& operator<<(ostream &out, vector<T> v);
-mxArray* parse_arrays(list_node arrays);
-mxArray* parse_family(list_node family);
-
-template <> int tonum<int>(const string &s) {
-    return atoi(s.c_str());
-}
-
-template <> double tonum<double>(const string &s) {
-    return atof(s.c_str());
-}
-
-template <typename T> vector<T> tonum(vector<string> v) {
-    vector<T> tokens(v.size());
-    for (size_t i = 0; i < v.size(); i++) {
-        tokens[i] = tonum<T>(v[i]);
+inline std::string trimmed(const std::string& s)
+{
+    int i = 0;
+    int n = s.length();
+    while (isspace(s[i])) {
+        i++;
     }
-    return tokens;
+    while (isspace(s[n-1])) {
+        n--;
+    }
+    return s.substr(i, n-i);
 }
 
-void mexFunction(int nlhs, mxArray *plhs[],
-                 int nrhs, const mxArray *prhs[])
+template<typename T> T tonum(const std::string& s);
+
+template<> int tonum<int>(const std::string& s)
+{
+    return std::stoi(s);
+}
+
+template<> double tonum<double>(const std::string& s)
+{
+    try {
+        return std::stod(s);
+    } catch (std::out_of_range& e) {
+        return 0.;
+    }
+}
+
+template<typename T> void tonum(std::vector<T>& tokens, const std::vector<std::string>& v)
+{
+    for (auto& s : v) {
+        tokens.push_back(tonum<T>(s));
+    }
+}
+
+typedef rapidxml::xml_node<>* xmlnode;
+
+mxArray* parse_family(std::vector<xmlnode>);
+mxArray* parse_arrays(std::vector<xmlnode>);
+
+void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 {
     assert(nlhs == 1);
     assert(nrhs == 1);
     char filename[200];
     mxGetString(prhs[0], filename, 200);
-    file<> xml_file(filename);
-    xml_document<> doc;
+    rapidxml::file<> xml_file { filename };
+    rapidxml::xml_document<> doc {};
     doc.parse<0>(xml_file.data());
-    list_node root;
-    root.push_back(doc.first_node());
-    plhs[0] = parse_family(root);
+    plhs[0] = parse_family(std::vector<xmlnode> { doc.first_node() });
 }
 
-mxArray* parse_family(list_node family)
+mxArray* parse_family(std::vector<xmlnode> family)
 {
-    dict_str_to_dict fields;
-    for (size_t sibling = 0; sibling < family.size(); sibling++) {
-        for (xmlnode
-             child = family[sibling]->first_node(); 
-             child; 
-             child = child->next_sibling()) {
-            if (child->type() == node_element) {
-                fields[child->name()][sibling].push_back(child);
+    std::map<std::string, std::map<int, std::vector<xmlnode>>> fields {};
+    for (size_t i = 0; i < family.size(); i++) {
+        for (auto c = family[i]->first_node(); c; c = c->next_sibling()) {
+            if (c->type() == rapidxml::node_element) {
+                fields[c->name()][i].push_back(c);
             }
         }
     }
@@ -88,90 +96,73 @@ mxArray* parse_family(list_node family)
     const char** fieldnames = new const char*[fields.size()];
     bool contract = true;
     int i = 0;
-    for (dict_str_to_dict::iterator 
-         field_family = fields.begin(); 
-         field_family != fields.end(); 
-         field_family++) {
-        fieldnames[i++] = field_family->first.c_str();
-        if (field_family->second.size() > 1) {
+    for (const auto& field_family : fields) {
+        fieldnames[i++] = field_family.first.c_str();
+        if (field_family.second.size() > 1) {
             contract = false;
         }
     }
-    mxArray* data = mxCreateStructMatrix((contract) ? 1 : family.size(), 1, 
-                                         fields.size(), fieldnames);
+    mxArray* data = mxCreateStructMatrix((contract) ? 1 : family.size(), 1, fields.size(), fieldnames);
     delete[] fieldnames;
 
-    bool has_type;
-    mxArray* value;
-    char* type;
-    for (dict_str_to_dict::iterator 
-         field_family = fields.begin(); 
-         field_family != fields.end(); 
-         field_family++) {
-        for (dict_i_to_list::iterator 
-             sibling_children = field_family->second.begin(); 
-             sibling_children != field_family->second.end(); 
-             sibling_children++) {
-            if (sibling_children->second[0]->first_node() == 0) {
+    for (const auto& __fields_pair : fields) {
+        auto& field = __fields_pair.first;
+        auto& families = __fields_pair.second;
+        for (const auto& __families_pair : families) {
+            auto& i_sibling = __families_pair.first;
+            auto& children = __families_pair.second;
+            if (!children[0]->first_node()) {
                 continue;
             }
-            has_type = sibling_children->second[0]->first_attribute("type") != 0;
-            if (has_type) {
-                type = sibling_children->second[0]->first_attribute("type")->value();
+            bool is_array = false;
+            if (children[0]->first_attribute("type")) {
+                std::string type { children[0]->first_attribute("type")->value() };
+                if (type == "real" || type == "int") {
+                    is_array = true;
+                }
             }
-            if (has_type && (strcmp(type, "dble") || strcmp(type, "int"))) {
-                value = parse_arrays(sibling_children->second);
-            } else if (sibling_children->second[0]->first_node()->type() == node_element) {
-                value = parse_family(sibling_children->second);
+            mxArray* value;
+            if (is_array) {
+                value = parse_arrays(children);
+            } else if (children[0]->first_node()->type() == rapidxml::node_element) {
+                value = parse_family(children);
             } else {
-                int size = sibling_children->second.size();
+                int size = children.size();
                 if (size > 1) {
                     value = mxCreateCellArray(1, &size);
                     for (i = 0; i < size; i++) {
-                        mxSetCell(value, i, mxCreateString(
-                            trimmed(sibling_children->second[i]->value()).c_str()));
+                        mxSetCell(value, i, mxCreateString(trimmed(children[i]->value()).c_str()));
                     }
                 } else {
-                    value = mxCreateString(
-                        trimmed(sibling_children->second[0]->value()).c_str());
+                    value = mxCreateString(trimmed(children[0]->value()).c_str());
                 }
             }
-            mxSetField(data, (contract) ? 0 : sibling_children->first, 
-                       field_family->first.c_str(), value);
+            mxSetField(data, (contract) ? 0 : i_sibling, field.c_str(), value);
         }
     }
 
     return data;
 }
 
-mxArray* parse_arrays(list_node arrays)
+mxArray* parse_arrays(std::vector<xmlnode> arrays)
 {
     int n_arrays = arrays.size();
     mxArray* data = mxCreateCellArray(1, &n_arrays);
-    bool has_size;
     for (int i_array = 0; i_array < n_arrays; i_array++) {
-        vector<int> dims;
-        has_size = arrays[i_array]->first_attribute("size") != 0;
-        if (has_size) {
-            vector<string> tokens;
-            string size_attr = trimmed(arrays[i_array]->first_attribute("size")->value());
-            split(tokens, size_attr);
-            dims = tonum<int>(tokens);
+        std::vector<int> dims {};
+        if (arrays[i_array]->first_attribute("size")) {
+            std::vector<std::string> tokens {};
+            split(tokens, arrays[i_array]->first_attribute("size")->value());
+            tonum(dims, tokens);
         } else {
-            dims = vector<int>(1, 1);
+            dims.push_back(1);
         }
         int n_dims = dims.size();
-        int* dims_arr = new int[n_dims];
-        for (int i = 0; i < n_dims; i++) {
-            dims_arr[i] = dims[i];
-        }
-        mxArray* mx_array = mxCreateNumericArray(n_dims, dims_arr, mxDOUBLE_CLASS, mxREAL);
-        delete[] dims_arr;
+        mxArray* mx_array = mxCreateNumericArray(n_dims, dims.data(), mxDOUBLE_CLASS, mxREAL);
         mxSetCell(data, i_array, mx_array);
         double* arr = mxGetPr(mx_array);
-        vector<double> col(dims[0]);
-        list_node node_index(n_dims);
-        vector<int> multi_index(n_dims, 1);
+        std::vector<xmlnode> node_index(n_dims);
+        std::vector<int> multi_index(n_dims, 1);
         if (n_dims > 1) {
             node_index.back() = arrays[i_array]->first_node("vector");
             for (int i = n_dims-2; i > 0; i--) {
@@ -179,19 +170,14 @@ mxArray* parse_arrays(list_node arrays)
             }
         }
         int running_index = 0;
-        while (true) {
-            string col_str;
-            if (n_dims == 1) {
-                col_str = arrays[i_array]->value();
-            } else {
-                col_str = node_index[1]->value();
-            }
-            col_str = trimmed(col_str);
-            vector<string> tokens;
+        while (multi_index.back() <= dims.back()) {
+            auto col_str = trimmed((n_dims == 1) ? arrays[i_array]->value() : node_index[1]->value());
+            std::vector<std::string> tokens {};
             split(tokens, col_str);
-            col = tonum<double>(tokens);
-            for (int i = 0; i < dims[0]; i++) {
-                arr[running_index++] = col[i];
+            std::vector<double> col {};
+            tonum(col, tokens);
+            for (auto& x : col) {
+                arr[running_index++] = x;
             }
             if (n_dims == 1) {
                 break;
@@ -202,8 +188,9 @@ mxArray* parse_arrays(list_node arrays)
                     if (i < n_dims-1) {
                         multi_index[i] = 1;
                         multi_index[i+1]++;
-                    } else
+                    } else {
                         break;
+                    }
                 } else {
                     node_index[i] = node_index[i]->next_sibling();
                     for (int j = i-1; j >= 1; j--) {
@@ -211,9 +198,6 @@ mxArray* parse_arrays(list_node arrays)
                     }
                     break;
                 }
-            }
-            if (multi_index.back() > dims.back()) {
-                break;
             }
         }
     }
@@ -225,23 +209,3 @@ mxArray* parse_arrays(list_node arrays)
     }
     return data;
 }
-
-inline string trimmed(const string &s) {
-    int i = 0, n = s.size();
-    while (isspace(s[i])) {
-        i++;
-    }
-    while (isspace(s[n-1])) {
-        n--;
-    }
-    return s.substr(i, n-i);
-}
-
-template <typename T>
-ostream& operator<<(ostream &out, vector<T> v) {
-    for (typename vector<T>::iterator it = v.begin(); it != v.end(); it++) {
-        out << *it << ' ';
-    }
-    return out;
-}
-
